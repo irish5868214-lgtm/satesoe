@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Love Website 💖</title>
+
+<style>
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:sans-serif;
+}
+
+body{
+  background:linear-gradient(135deg,#ffd6e7,#ffeef7,#e0f7ff);
+  min-height:100vh;
+  overflow-x:hidden;
+  text-align:center;
+}
+
+/* pages */
+
+.page{
+  width:100%;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+}
+
+/* image */
+
+.main-img{
+  width:240px;
+  border-radius:25px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.15);
+  animation:float 3s ease-in-out infinite;
+  margin-bottom:20px;
+}
+
+@keyframes float{
+  0%{transform:translateY(0);}
+  50%{transform:translateY(-10px);}
+  100%{transform:translateY(0);}
+}
+
+h1{
+  color:#ff4f8b;
+  margin-bottom:10px;
+  font-size:38px;
+}
+
+p{
+  font-size:24px;
+  color:#444;
+  margin-bottom:20px;
+}
+
+/* buttons */
+
+.btns{
+  display:flex;
+  gap:20px;
+}
+
+button{
+  border:none;
+  padding:14px 35px;
+  border-radius:40px;
+  font-size:20px;
+  cursor:pointer;
+  transition:0.3s;
+  font-weight:bold;
+}
+
+#yesBtn{
+  background:#ff4f8b;
+  color:white;
+}
+
+#noBtn{
+  background:white;
+  color:#ff4f8b;
+}
+
+/* second page */
+
+#page2{
+  display:none;
+}
+
+.gift-title{
+  font-size:30px;
+  color:#ff4f8b;
+  margin-bottom:10px;
+}
+
+.gifts{
+  display:flex;
+  flex-wrap:wrap;
+  gap:30px;
+  justify-content:center;
+}
+
+.gift{
+  width:180px;
+  background:white;
+  border-radius:25px;
+  padding:25px;
+  cursor:pointer;
+  transition:0.3s;
+  box-shadow:0 8px 20px rgba(0,0,0,0.1);
+}
+
+.gift:hover{
+  transform:translateY(-8px) scale(1.05);
+}
+
+.gift span{
+  font-size:85px;
+}
+
+.gift h2{
+  margin-top:10px;
+  color:#ff4f8b;
+}
+
+/* message box */
+
+#messageBox{
+  margin-top:35px;
+  background:white;
+  padding:30px;
+  border-radius:25px;
+  max-width:500px;
+  width:90%;
+  box-shadow:0 10px 25px rgba(0,0,0,0.12);
+
+  opacity:0;
+  transform:translateY(30px) scale(0.9);
+
+  transition:0.5s;
+  display:none;
+}
+
+#messageBox.show{
+  opacity:1;
+  transform:translateY(0) scale(1);
+}
+
+#messageBox h3{
+  color:#ff4f8b;
+  margin-bottom:15px;
+  font-size:30px;
+}
+
+#messageText{
+  font-size:24px;
+  color:#555;
+  line-height:1.5;
+}
+
+/* floating bubbles */
+
+.bubble{
+  position:fixed;
+  bottom:-100px;
+  background:rgba(255,255,255,0.5);
+  border-radius:50%;
+  animation:up linear infinite;
+  z-index:-1;
+}
+
+@keyframes up{
+  0%{
+    transform:translateY(0);
+    opacity:0;
+  }
+
+  50%{
+    opacity:1;
+  }
+
+  100%{
+    transform:translateY(-120vh);
+    opacity:0;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- MUSIC -->
+
+<audio id="bgMusic" loop preload="auto">
+  <source src="mine.mp3" type="audio/mpeg">
+</audio>
+
+<!-- PAGE 1 -->
+
+<div class="page" id="page1">
+
+<h1>I Love You ချီးထုပ်လေး💖</h1>
+
+<img class="main-img" src="cat1.jpg" alt="Valentine Gif"/>
+
+<p>ချီးထုပ်လေးစိတ်ဆိုးနေတာလားဗျာ🥺</p>
+
+<div class="btns">
+  <button id="yesBtn">မဆိုးဘူး</button>
+  <button id="noBtn">ဆိုးတယ်</button>
+</div>
+
+</div>
+
+<!-- PAGE 2 -->
+
+<div class="page" id="page2">
+
+<h1 class="gift-title">
+စိတ်ဆိုးပြေအောင် အောက်က 3ခုထဲက တစ်ခုရွေးပေးနော် 💕
+</h1>
+
+<div class="gifts">
+
+<div class="gift" onclick="showGift(1)">
+<span>🎁</span>
+<h2>Box 1</h2>
+</div>
+
+<div class="gift" onclick="showGift(2)">
+<span>🎁</span>
+<h2>Box 2</h2>
+</div>
+
+<div class="gift" onclick="showGift(3)">
+<span>🎁</span>
+<h2>Box 3</h2>
+</div>
+
+</div>
+
+<!-- animated message -->
+
+<div id="messageBox">
+
+<h3 id="giftTitle"></h3>
+
+<div id="messageText"></div>
+
+</div>
+
+</div>
+
+<script>
+
+/* yes no */
+
+let yesBtn=document.getElementById("yesBtn");
+let noBtn=document.getElementById("noBtn");
+
+let size=20;
+
+noBtn.onclick=function(){
+
+  size += 8;
+
+  yesBtn.style.fontSize=size+"px";
+
+}
+
+yesBtn.onclick=function(){
+
+  document.getElementById("page1").style.display="none";
+  document.getElementById("page2").style.display="flex";
+
+}
+
+/* gift messages */
+
+function showGift(num){
+
+let box=document.getElementById("messageBox");
+let title=document.getElementById("giftTitle");
+let text=document.getElementById("messageText");
+box.style.display="block";
+
+setTimeout(()=>{
+  box.classList.add("show");
+},50);
+
+if(num==1){
+
+
+
+text.innerHTML=
+"ချီးထုပ်လေးစိတ်ဆိုးပြေအောင် ကိုကိုက မုန့်တွေများကြီး၀ယ်ကျွေးမယ် 🫶🏻";
+
+}
+
+if(num==2){
+
+
+
+text.innerHTML=
+"ကိုကိုနဲ့ movie dateမယ် 🍿";
+
+}
+
+if(num==3){
+
+
+
+text.innerHTML=
+"ကိုကိုက lipstick ၀ယ်ပေးမယ်💄";
+
+}
+
+}
+
+/* bubbles */
+
+function createBubble(){
+
+let bubble=document.createElement("div");
+
+bubble.classList.add("bubble");
+
+let size=Math.random()*60+20;
+
+bubble.style.width=size+"px";
+bubble.style.height=size+"px";
+
+bubble.style.left=Math.random()*100+"vw";
+
+bubble.style.animationDuration=
+(Math.random()*5+5)+"s";
+
+document.body.appendChild(bubble);
+
+setTimeout(()=>{
+bubble.remove();
+},10000);
+
+}
+
+setInterval(createBubble,500);
+
+
+/* ================= MUSIC FIX ================= */
+
+const music = document.getElementById("bgMusic");
+
+async function startMusic(){
+
+  try{
+
+    await music.play();
+
+    console.log("music started");
+
+    document.removeEventListener("touchstart", startMusic);
+    document.removeEventListener("click", startMusic);
+
+  }catch(err){
+
+    console.log(err);
+
+  }
+
+}
+
+// PHONE
+document.addEventListener(
+  "touchstart",
+  startMusic,
+  { once:true }
+);
+
+// LAPTOP
+document.addEventListener(
+  "click",
+  startMusic,
+  { once:true }
+);
+
+</script>
+
+</body>
+</html>
